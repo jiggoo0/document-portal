@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>K-Bank Statement Pro - Official Format</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+39&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/Steatment.css">
+
+    <script src="lib/qrcode.min.js"></script>
+    <script src="lib/jspdf.umd.min.js"></script>
+    <script src="lib/html2canvas.min.js"></script>
+</head>
+<body>
+
+    <nav class="no-print panel-container">
+        <button onclick="window.print()" class="print-btn">
+            🖨️ พิมพ์เอกสาร (Browser)
+        </button>
+        <button onclick="exportToPDF(event)" class="print-btn pdf-btn">
+            📄 เซฟ PDF (High Quality)
+        </button>
+        <button onclick="location.href='index.html'" class="print-btn" style="background:#636e72">
+            🏠 หน้าหลัก
+        </button>
+    </nav>
+
+    <div id="document-wrapper">
+        <div id="page-container">
+            </div>
+    </div>
+
+    <script src="js/Steatment.js"></script>
+
+    <script>
+        /**
+         * ฟังก์ชันสร้าง QR Code
+         * ตรวจสอบว่ามี container และ ref หรือไม่ก่อนสร้าง
+         */
+        function makeQRCodes() {
+            const qrContainers = document.querySelectorAll('.qr-code-container');
+            qrContainers.forEach((div) => {
+                if (div.childNodes.length === 0) {
+                    const reference = div.dataset.ref || `KB${Date.now()}`;
+                    new QRCode(div, {
+                        text: `https://verify.kasikornbank.com/v/${reference}`,
+                        width: 100, // ปรับให้ใหญ่ขึ้นเล็กน้อยเพื่อการสแกนบนมือถือ
+                        height: 100,
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.H
+                    });
+                }
+            });
+        }
+
+        /**
+         * ฟังก์ชัน Export PDF ระดับพรีเมียม
+         * รองรับ Multi-page และความคมชัดสูง
+         */
+        async function exportToPDF(event) {
+            const btn = event.target;
+            const originalText = btn.innerText;
+            
+            // UI Feedback
+            btn.innerText = "⏳ กำลังประมวลผล...";
+            btn.disabled = true;
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const container = document.getElementById('page-container');
+                const pages = container.getElementsByClassName('page');
+                
+                if (pages.length === 0) throw new Error("ไม่พบข้อมูลหน้าเอกสาร");
+
+                const pdf = new jsPDF('p', 'mm', 'a4');
+
+                for (let i = 0; i < pages.length; i++) {
+                    // แปลง HTML เป็น Canvas ด้วยความละเอียดสูง (Scale 3)
+                    const canvas = await html2canvas(pages[i], { 
+                        scale: 3, 
+                        useCORS: true,
+                        allowTaint: false,
+                        logging: false,
+                        backgroundColor: "#ffffff"
+                    });
+
+                    const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                    
+                    if (i > 0) pdf.addPage();
+                    pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+                }
+
+                pdf.save(`K-Bank_Statement_${new Date().getTime()}.pdf`);
+            } catch (err) {
+                console.error(err);
+                alert("เกิดข้อผิดพลาดในการสร้าง PDF: " + err.message);
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        /**
+         * Lifecycle: เมื่อโหลดหน้าเสร็จ
+         */
+        window.addEventListener('load', () => {
+            // หน่วงเวลาเล็กน้อยเพื่อให้ฟอนต์และรูปภาพพร้อม
+            setTimeout(() => {
+                if (typeof renderApp === 'function') {
+                    renderApp(); 
+                    // สร้าง QR Code หลังจากตารางวาดเสร็จ
+                    setTimeout(makeQRCodes, 300);
+                } else {
+                    console.error("ไม่พบฟังก์ชัน renderApp ใน Steatment.js");
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>

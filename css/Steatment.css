@@ -1,0 +1,213 @@
+/**
+ * K-Bank Statement Styles (Modern Pro)
+ * Optimized for Desktop, Mobile (iPhone 8+) and A4 Printing
+ */
+
+/* 1. Root Variables & Config */
+:root {
+  --k-green: #00A950;
+  --line-color: #000000;
+  --light-bg: #f2f2f2;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+/* 2. Global Reset */
+* {
+  box-sizing: border-box;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+body {
+  font-family: 'Sarabun', sans-serif;
+  font-size: 8.5px;
+  background-color: #525659;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* 3. Page Setup (A4) */
+.page {
+  width: 210mm;
+  height: 297mm;
+  padding: 12mm 15mm;
+  background: white;
+  margin: 20px auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 15px var(--shadow-color);
+}
+
+/* Watermark: โลโก้จางๆ ตรงกลางกระดาษ */
+.page::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  width: 400px;
+  height: 400px;
+  background: url('../assets/Logo.jpg') no-repeat center;
+  background-size: contain;
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 4. Header & Customer Info */
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 5px;
+  z-index: 1;
+}
+
+.title-th { font-size: 14px; font-weight: 700; margin: 0; }
+.title-en { font-size: 9px; font-weight: 400; margin: 0; }
+
+.bank-logo {
+  width: 170px;
+  height: auto;
+  display: block;
+}
+
+.info-grid {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  border-top: 1px solid var(--line-color);
+  padding-top: 10px;
+  z-index: 1;
+}
+
+.customer-info { width: 55%; line-height: 1.6; font-size: 9px; }
+
+.s-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 5px;
+}
+
+.s-table td {
+  border: 1px solid var(--line-color);
+  padding: 3px 8px;
+}
+
+.label-bg { background: var(--light-bg); font-weight: 600; }
+
+.barcode-box {
+  margin: 5px 0;
+  font-family: 'Libre Barcode 39';
+  font-size: 32px;
+  line-height: 1;
+}
+
+/* 5. Main Transaction Table */
+.statement-container {
+  flex-grow: 1;
+  margin-top: 5px;
+  z-index: 1;
+}
+
+.main-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  border-top: 1.2px solid var(--line-color);
+  border-bottom: 1.2px solid var(--line-color);
+}
+
+.main-table th {
+  background: var(--light-bg);
+  font-weight: 700;
+  height: 35px;
+  border: 1px solid var(--line-color);
+  text-align: center;
+}
+
+.main-table td {
+  height: 24px;
+  vertical-align: middle;
+  padding: 2px 6px;
+  border-left: 0.5px solid var(--line-color);
+  border-right: 0.5px solid var(--line-color);
+  border-bottom: none; /* ลบเส้นแนวนอนระหว่างแถวตามแบบฟอร์มธนาคาร */
+}
+
+/* 6. Footer Section */
+.footer {
+  margin-top: auto;
+  padding-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 7.5px;
+  border-top: 1px solid var(--line-color);
+  z-index: 1;
+}
+
+.qr-code-container { width: 55px; height: 55px; margin-bottom: 5px; }
+
+/* 7. UI Components (Non-Print) */
+.panel-container {
+  text-align: center;
+  padding: 15px;
+  background: #2d3436;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.print-btn {
+  padding: 10px 20px;
+  background: var(--k-green);
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+  font-family: 'Sarabun';
+  transition: 0.2s;
+}
+
+.print-btn:hover { filter: brightness(1.1); }
+.pdf-btn { background: #2c3e50 !important; }
+
+/* 8. Mobile & iPhone 8+ Scaling Logic */
+@media screen and (max-width: 480px) {
+  body { background-color: #f2f2f2; }
+  
+  .panel-container { padding: 10px; flex-wrap: wrap; }
+  
+  /* Scaling A4 to fit iPhone 8+ Screen (414px) */
+  #page-container {
+    transform: scale(calc(100vw / 225mm)); 
+    transform-origin: top center;
+    margin: 0 auto;
+    width: 210mm;
+  }
+}
+
+/* 9. Print Settings */
+@media print {
+  body { background: white !important; }
+  .no-print, .panel-container { display: none !important; }
+  .page {
+    margin: 0 !important;
+    box-shadow: none !important;
+    page-break-after: always;
+    transform: scale(1) !important; /* ห้ามย่อส่วนตอนพิมพ์ */
+  }
+}
+
+/* Utils */
+.amt-flex { display: flex; justify-content: space-between; }
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+.f-bold { font-weight: 700; }

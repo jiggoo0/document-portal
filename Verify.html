@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Embassy Verification - JP Group</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/Verify.css">
+
+    <script src="lib/qrcode.min.js"></script>
+    <script src="lib/jspdf.umd.min.js"></script>
+    <script src="lib/html2canvas.min.js"></script>
+</head>
+<body>
+
+    <nav class="no-print admin-panel">
+        <div class="panel-content">
+            <button onclick="location.href='index.html'" class="btn-back">🏠 กลับหน้าหลัก</button>
+            <div class="actions">
+                <button onclick="window.print()" class="btn-action">🖨️ พิมพ์เอกสาร</button>
+                <button onclick="exportToPDF(event)" class="btn-action pdf">📄 ดาวน์โหลด PDF</button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="document-wrapper">
+        <div id="page-container">
+            <div class="page shadow">
+                <div class="letterhead">
+                    <div class="company-logo">
+                        <img src="assets/Logo.jpg" alt="Company Logo" onerror="this.src='https://via.placeholder.com/120x120?text=LOGO'">
+                    </div>
+                    <div class="company-info">
+                        <h2>JP GROUP MANAGEMENT CO., LTD.</h2>
+                        <p>123 Ratchadaphisek Rd, Din Daeng, Bangkok 10400, Thailand</p>
+                        <p>Tel: +66 2 888 8888 | Email: info@jpgroup.com | www.jpgroup.com</p>
+                    </div>
+                </div>
+
+                <div class="letter-content">
+                    <div class="date-row">
+                        Date: <span id="current-date">December 17, 2025</span>
+                    </div>
+
+                    <div class="subject-title">TO WHOM IT MAY CONCERN</div>
+
+                    <div class="subject-line">
+                        <strong>Subject: Financial Confirmation and Sponsorship Support</strong>
+                    </div>
+
+                    <div class="letter-body">
+                        <p>This is to officially certify that <strong>Ms. Kritsana Charoensuk</strong>, holder of Thai Passport Number <strong>AA1234567</strong>, is a recognized client of <strong>JP Group Management Co., Ltd.</strong></p>
+                        
+                        <p>We hereby confirm that the aforementioned individual maintains a verified financial record with our institution. As of the current date, the account holds a total balance of <strong>THB 1,250,000.00 (One Million Two Hundred Fifty Thousand Baht Only)</strong>.</p>
+                        
+                        <p>This certificate is issued at the request of our client for the purpose of a <strong>Visa Application</strong> at the Embassy. We guarantee that all information provided above is accurate and reflects our official records.</p>
+                        
+                        <p>Should you require any further information or verification regarding this matter, please do not hesitate to contact us directly at our official office during business hours.</p>
+                    </div>
+
+                    <div class="signature-section">
+                        <p>Yours Sincerely,</p>
+                        <div class="sign-space">
+                            <img src="assets/Seal.png" class="company-seal" alt="Seal" id="seal-img" style="display:none" onload="this.style.display='block'">
+                        </div>
+                        <div class="sign-name">
+                            <p><strong>(Mr. Jakkarin P.)</strong></p>
+                            <p>Authorized Director</p>
+                            <p>JP Group Management Co., Ltd.</p>
+                        </div>
+                    </div>
+
+                    <div class="footer-verify">
+                        <div id="verify-qr" class="qr-container" data-ref="REF-JP20251217-01"></div>
+                        <div class="verify-text">
+                            <p><strong>Verification Security Code:</strong> JP20251217-01</p>
+                            <p>Scan this QR Code to verify the authenticity of this document online.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/Verify.js"></script>
+
+    <script>
+        /**
+         * ฟังก์ชันสร้าง QR Code อัตโนมัติ
+         */
+        function generateQRCode() {
+            const qrDiv = document.getElementById('verify-qr');
+            if (qrDiv && typeof QRCode !== 'undefined') {
+                const refCode = qrDiv.dataset.ref || 'JP-TEMP-' + Date.now();
+                new QRCode(qrDiv, {
+                    text: "https://verify.jpgroup.com/doc/" + refCode,
+                    width: 80,
+                    height: 80,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+            }
+        }
+
+        /**
+         * ฟังก์ชันส่งออกเป็น PDF คุณภาพสูง (A4)
+         */
+        async function exportToPDF(event) {
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = "⌛ Processing...";
+            btn.disabled = true;
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const element = document.querySelector('.page');
+                
+                const canvas = await html2canvas(element, {
+                    scale: 3, // ความละเอียดสูงสำหรับงานพิมพ์
+                    useCORS: true,
+                    backgroundColor: "#ffffff"
+                });
+
+                const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+                pdf.save(`Verify_Letter_${new Date().getTime()}.pdf`);
+            } catch (error) {
+                console.error("PDF Export Error:", error);
+                alert("ไม่สามารถสร้าง PDF ได้ในขณะนี้");
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // เริ่มต้นการทำงาน
+        window.addEventListener('load', () => {
+            // ตั้งค่าวันที่ปัจจุบัน (ถ้า JS ภายนอกยังไม่ทำงาน)
+            const dateSpan = document.getElementById('current-date');
+            if (dateSpan) {
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                dateSpan.innerText = new Date().toLocaleDateString('en-US', options);
+            }
+            
+            // สร้าง QR Code
+            setTimeout(generateQRCode, 300);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Ticket - JP Ariway Official</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/ticket.css">
+    
+    <script src="lib/qrcode.min.js"></script>
+    <script src="lib/jspdf.umd.min.js"></script>
+    <script src="lib/html2canvas.min.js"></script>
+</head>
+<body>
+
+    <div class="no-print actions">
+        <button onclick="window.print()" class="btn-print">🖨️ Print Ticket</button>
+        <button id="pdf-btn" onclick="downloadTicketPDF()" class="btn-pdf">📄 Download PDF</button>
+    </div>
+
+    <div id="ticket-container">
+        </div>
+
+    <script src="js/ticket.js"></script>
+</body>
+</html>

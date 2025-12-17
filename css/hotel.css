@@ -1,0 +1,68 @@
+:root {
+    --gold: #c5a059;
+    --dark: #1a1a1a;
+    --gray: #666666;
+    --bg: #f8f8f8;
+}
+
+* { box-sizing: border-box; -webkit-print-color-adjust: exact; }
+body { font-family: 'Sarabun', sans-serif; background: var(--bg); margin: 0; padding: 40px 0; }
+
+#hotel-container { width: 100%; max-width: 700px; margin: 0 auto; }
+
+.hotel-card {
+    background: white; border-radius: 4px; overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.05); border: 1px solid #eee;
+}
+
+.card-header {
+    background: var(--dark); color: white; padding: 40px; text-align: center;
+    border-bottom: 4px solid var(--gold);
+}
+
+.hotel-name { font-size: 26px; font-weight: 700; letter-spacing: 3px; margin-bottom: 5px; }
+.sub-title { font-size: 12px; color: var(--gold); letter-spacing: 2px; }
+
+.card-body { padding: 40px; }
+
+.section-title { 
+    font-size: 14px; font-weight: 700; color: var(--gold); 
+    border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px;
+}
+
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px; }
+.info-item label { display: block; font-size: 11px; color: var(--gray); margin-bottom: 5px; }
+.info-item .val { font-size: 16px; font-weight: 600; color: var(--dark); }
+
+.stay-details {
+    background: #fafafa; padding: 25px; border-radius: 4px;
+    display: flex; justify-content: space-between; margin-bottom: 40px;
+}
+
+.date-box { text-align: center; flex: 1; }
+.date-box .label { font-size: 10px; color: var(--gray); margin-bottom: 8px; }
+.date-box .date { font-size: 20px; font-weight: 700; color: var(--dark); }
+.arrow { color: var(--gold); align-self: center; font-size: 20px; }
+
+.qr-footer {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding-top: 30px; border-top: 1px dashed #ccc;
+}
+
+.qr-code { padding: 5px; border: 1px solid #eee; }
+.conf-no { font-size: 12px; font-weight: 700; margin-bottom: 5px; }
+.address { font-size: 10px; color: var(--gray); line-height: 1.6; max-width: 300px; }
+
+.actions { text-align: center; margin-bottom: 20px; }
+.btn-print, .btn-pdf {
+    padding: 10px 25px; border: none; cursor: pointer; color: white; 
+    border-radius: 4px; font-weight: 600; margin: 0 5px;
+}
+.btn-print { background: #333; }
+.btn-pdf { background: var(--gold); }
+
+@media print {
+    .no-print { display: none; }
+    body { padding: 0; }
+    .hotel-card { box-shadow: none; border: 1px solid #eee; }
+}
