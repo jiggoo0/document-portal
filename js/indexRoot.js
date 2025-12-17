@@ -1,17 +1,20 @@
 /**
  * JP Group Management System - Root Dashboard Logic
- * ระบบจัดการ Portal กลางและการแสดงผลหน้าแรก
- * Version: 1.1.0
+ * Optimized for Modern Browsers & Mobile Performance
+ * Version: 1.2.0
  */
 
 "use strict";
 
 document.addEventListener('DOMContentLoaded', () => {
     // 1. เริ่มทำงานระบบนาฬิกาแบบ Real-time
-    initDigitalClock();
+    const clockController = initDigitalClock();
 
     // 2. รันแอนิเมชันตอนเข้าหน้าเว็บ (Entrance Stagger Animation)
     initEntranceAnimation();
+
+    // 3. จัดการสถานะ Hover สำหรับ Mobile/Touch
+    initTouchStates();
 });
 
 /**
@@ -20,13 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 function initDigitalClock() {
     const timeDisplay = document.getElementById('current-time');
-    
-    // ตรวจสอบว่ามี Element ในหน้าเว็บหรือไม่ก่อนรัน
-    if (!timeDisplay) return;
+    if (!timeDisplay) return null;
 
     const updateClock = () => {
         const now = new Date();
-        const formattedTime = now.toLocaleString('th-TH', {
+        timeDisplay.textContent = now.toLocaleString('th-TH', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
@@ -35,12 +36,13 @@ function initDigitalClock() {
             second: '2-digit',
             hour12: false
         });
-        
-        timeDisplay.innerText = formattedTime;
     };
 
-    updateClock(); // รันทันทีเมื่อโหลดหน้า
-    setInterval(updateClock, 1000);
+    updateClock();
+    const intervalId = setInterval(updateClock, 1000);
+    
+    // Return สำหรับใช้จัดการ Cleanup หากจำเป็น
+    return intervalId;
 }
 
 /**
@@ -49,21 +51,41 @@ function initDigitalClock() {
  */
 function initEntranceAnimation() {
     const cards = document.querySelectorAll('.menu-card');
-    
     if (cards.length === 0) return;
 
     cards.forEach((card, index) => {
-        // ตั้งค่าเริ่มต้น (Hidden State)
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.willChange = 'transform, opacity'; // ช่วยให้เบราว์เซอร์รันแอนิเมชันได้ลื่นขึ้น
+        // Initial State
+        Object.assign(card.style, {
+            opacity: '0',
+            transform: 'translateY(20px)',
+            willChange: 'transform, opacity'
+        });
 
-        // สั่งให้เริ่มทำงานตามลำดับ (Sequential Stagger)
+        // Stagger Animation using requestAnimationFrame for performance
         setTimeout(() => {
-            // ใช้ Cubic Bezier เพื่อให้แอนิเมชันดู Smooth แบบ Modern UI
-            card.style.transition = 'all 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-        }, 120 * index); // หน่วงเวลา 120ms ต่อการแสดงผล 1 Card
+            requestAnimationFrame(() => {
+                card.style.transition = 'all 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            });
+        }, 100 * index);
+    });
+}
+
+/**
+ * ฟังก์ชันจัดการ Touch State สำหรับอุปกรณ์มือถือ
+ * ช่วยให้การกดเมนูบน iPhone ดูตอบสนอง (Responsive) มากขึ้น
+ */
+function initTouchStates() {
+    const cards = document.querySelectorAll('.menu-card');
+    cards.forEach(card => {
+        card.addEventListener('touchstart', () => {
+            card.style.transform = 'scale(0.98)';
+            card.style.transition = 'transform 0.1s ease';
+        }, { passive: true });
+
+        card.addEventListener('touchend', () => {
+            card.style.transform = 'translateY(0) scale(1)';
+        }, { passive: true });
     });
 }

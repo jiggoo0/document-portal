@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification System | JP Group</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/JPverify.css">
+</head>
+<body>
+    <div class="verify-wrapper">
+        <header class="verify-header">
+            <img src="assets/Banner.jpg" alt="JP Group" class="verify-logo">
+        </header>
+
+        <main class="verify-card" id="main-card">
+            <div id="status-indicator" class="status-banner is-loading">
+                <div class="icon-circle" id="status-icon">⏳</div>
+                <h2 id="status-title">Checking...</h2>
+                <p id="status-message">กำลังตรวจสอบความถูกต้องของเอกสาร</p>
+            </div>
+
+            <div class="data-section">
+                <div class="data-group">
+                    <span class="label">Document ID</span>
+                    <span class="value" id="doc-id">--------</span>
+                </div>
+                <div class="data-group">
+                    <span class="label">Issued To</span>
+                    <span class="value" id="doc-holder">--------</span>
+                </div>
+                <div class="data-group">
+                    <span class="label">Issue Date</span>
+                    <span class="value" id="doc-date">--------</span>
+                </div>
+                <div class="data-group">
+                    <span class="label">Status</span>
+                    <span class="value highlight" id="doc-status">Authentic</span>
+                </div>
+            </div>
+
+            <div class="verify-footer">
+                <p>© 2025 JP Group Document Authentication</p>
+            </div>
+        </main>
+        
+        <a href="index.html" class="back-btn">กลับสู่หน้าหลัก</a>
+    </div>
+
+    <script src="js/JPverify.js"></script>
+</body>
+</html>
