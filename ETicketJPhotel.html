@@ -2,25 +2,100 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Hotel Confirmation - JP Luxury Hotel</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="css/hotel.css">
     
-    <script src="lib/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="lib/jspdf.umd.min.js"></script>
     <script src="lib/html2canvas.min.js"></script>
+
+    <style>
+        /* UI Control Bar (สไตล์ปุ่มที่ดูพรีเมียม) */
+        .no-print.actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 15px;
+            background: #ffffff;
+            border-bottom: 2px solid #f1f1f1;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .btn-ui {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Sarabun', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .btn-home { background: #f8f9fa; color: #2d3436; border: 1px solid #ddd; }
+        .btn-print { background: #2d3436; color: #ffffff; }
+        .btn-pdf { background: #b8860b; color: #ffffff; } /* Dark Golden Rod */
+
+        .btn-ui:hover { 
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            filter: brightness(1.1);
+        }
+
+        /* โครงสร้างหลัก */
+        body {
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        #hotel-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 15px;
+            min-height: 500px;
+        }
+
+        /* ตั้งค่าการพิมพ์ */
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; }
+            #hotel-container { 
+                margin: 0 auto !important; 
+                padding: 0 !important;
+                max-width: 100% !important;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <div class="no-print actions">
-        <button onclick="window.print()" class="btn-print">🖨️ พิมพ์ใบยืนยัน</button>
-        <button id="pdf-btn" onclick="downloadHotelPDF()" class="btn-pdf">📄 ดาวน์โหลด PDF</button>
-    </div>
+    <nav class="no-print actions">
+        <a href="index.html" class="btn-ui btn-home">🏠 หน้าหลัก</a>
+        <button onclick="window.print()" class="btn-ui btn-print">🖨️ พิมพ์ใบยืนยัน</button>
+        <button id="pdf-btn" onclick="downloadHotelPDF()" class="btn-ui btn-pdf">📄 ดาวน์โหลด PDF</button>
+    </nav>
 
-    <div id="hotel-container">
+    <main id="hotel-container">
+        <div style="text-align: center; padding-top: 100px; color: #95a5a6;">
+            <p>กำลังดึงข้อมูลการจองของคุณ...</p>
         </div>
+    </main>
 
     <script src="js/hotel.js"></script>
+
 </body>
 </html>

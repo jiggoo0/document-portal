@@ -1,44 +1,211 @@
+/**
+ * JP World Travel - Tour Voucher Stylesheet
+ * Optimized for Mobile Display & High-Resolution PDF Export
+ */
+
 :root {
     --travel-blue: #0984e3;
     --navy: #2d3436;
     --light-blue: #e1f5fe;
     --white: #ffffff;
+    --border-color: #eeeeee;
+    --text-muted: #546e7a;
 }
 
-* { box-sizing: border-box; -webkit-print-color-adjust: exact; }
-body { font-family: 'Sarabun', sans-serif; background: #f4f7f6; margin: 0; padding: 30px 0; }
+/* Base Setup */
+* { 
+    box-sizing: border-box; 
+    -webkit-print-color-adjust: exact; 
+    print-color-adjust: exact;
+}
 
-#tour-container { width: 100%; max-width: 750px; margin: 0 auto; background: var(--white); border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); overflow: hidden; }
+body { 
+    font-family: 'Sarabun', sans-serif; 
+    background: #f4f7f6; 
+    margin: 0; 
+    padding: 20px; 
+}
 
-.tour-header { background: var(--travel-blue); color: var(--white); padding: 30px; display: flex; justify-content: space-between; align-items: center; }
-.brand-name { font-size: 24px; font-weight: 700; letter-spacing: 1px; }
-.voucher-label { font-size: 12px; background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 20px; }
+/* Main Container */
+#tour-container { 
+    width: 100%; 
+    max-width: 750px; 
+    margin: 0 auto; 
+    background: var(--white); 
+    border-radius: 12px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+    overflow: hidden; 
+}
 
-.tour-content { padding: 35px; }
+/* Header Section */
+.tour-header { 
+    background: var(--travel-blue); 
+    color: var(--white); 
+    padding: 35px 30px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
 
-.tour-title-box { margin-bottom: 30px; }
-.tour-name { font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 5px; }
-.tour-code { color: var(--travel-blue); font-size: 12px; font-weight: 600; }
+.brand-name { 
+    font-size: 26px; 
+    font-weight: 800; 
+    letter-spacing: 2px; 
+}
 
-.info-bar { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--light-blue); padding: 20px; border-radius: 8px; margin-bottom: 30px; }
-.info-item label { display: block; font-size: 10px; color: #546e7a; margin-bottom: 5px; }
-.info-item span { font-size: 14px; font-weight: 700; color: var(--navy); }
+.voucher-label { 
+    font-size: 11px; 
+    background: rgba(255,255,255,0.25); 
+    padding: 6px 14px; 
+    border-radius: 20px; 
+    font-weight: 600;
+    text-transform: uppercase;
+}
 
-/* Timeline Itinerary */
-.itinerary-section { margin-top: 20px; }
-.section-h { font-size: 16px; font-weight: 700; margin-bottom: 20px; border-left: 4px solid var(--travel-blue); padding-left: 10px; }
+/* Content Area */
+.tour-content { padding: 40px 30px; }
 
-.day-item { display: flex; gap: 20px; margin-bottom: 20px; position: relative; }
-.day-num { font-weight: 700; color: var(--travel-blue); min-width: 50px; }
-.day-desc { font-size: 13px; line-height: 1.6; color: #444; border-bottom: 1px solid #eee; padding-bottom: 10px; flex-grow: 1; }
+.tour-title-box { margin-bottom: 35px; }
 
-.tour-footer { display: flex; justify-content: space-between; align-items: flex-end; padding: 30px; background: #fafafa; border-top: 1px solid #eee; }
-.contact-info { font-size: 11px; color: #777; line-height: 1.8; }
-.qr-box { text-align: center; }
+.tour-name { 
+    font-size: 24px; 
+    font-weight: 700; 
+    color: var(--navy); 
+    margin-bottom: 8px; 
+    line-height: 1.3;
+}
 
-.actions { text-align: center; margin-bottom: 20px; }
-.btn-print, .btn-pdf { padding: 10px 25px; border: none; border-radius: 5px; cursor: pointer; color: white; font-weight: 600; margin: 0 5px; }
+.tour-code { 
+    color: var(--travel-blue); 
+    font-size: 13px; 
+    font-weight: 700; 
+    letter-spacing: 1px;
+}
+
+/* Information Grid */
+.info-bar { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    background: var(--light-blue); 
+    padding: 25px; 
+    border-radius: 10px; 
+    margin-bottom: 40px; 
+    gap: 15px;
+}
+
+.info-item label { 
+    display: block; 
+    font-size: 10px; 
+    color: var(--text-muted); 
+    margin-bottom: 6px; 
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.info-item span { 
+    font-size: 15px; 
+    font-weight: 700; 
+    color: var(--navy); 
+}
+
+/* Timeline Itinerary Section */
+.itinerary-section { margin-top: 10px; }
+
+.section-h { 
+    font-size: 17px; 
+    font-weight: 800; 
+    margin-bottom: 25px; 
+    border-left: 5px solid var(--travel-blue); 
+    padding-left: 15px; 
+    color: var(--navy);
+}
+
+.day-item { 
+    display: flex; 
+    gap: 25px; 
+    margin-bottom: 22px; 
+}
+
+.day-num { 
+    font-weight: 800; 
+    color: var(--travel-blue); 
+    min-width: 60px; 
+    font-size: 14px;
+}
+
+.day-desc { 
+    font-size: 14px; 
+    line-height: 1.6; 
+    color: #333333; 
+    border-bottom: 1px solid var(--border-color); 
+    padding-bottom: 12px; 
+    flex-grow: 1; 
+}
+
+.day-item:last-child .day-desc { border-bottom: none; }
+
+/* Footer Section */
+.tour-footer { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-end; 
+    padding: 40px 30px; 
+    background: #fafafa; 
+    border-top: 1px solid var(--border-color); 
+}
+
+.contact-info { 
+    font-size: 12px; 
+    color: #666666; 
+    line-height: 1.8; 
+}
+
+.contact-info strong { color: var(--navy); font-size: 13px; }
+
+.qr-box { 
+    text-align: center; 
+    background: var(--white); 
+    padding: 10px; 
+    border: 1px solid #eeeeee; 
+    border-radius: 8px;
+}
+
+.qr-sub-text { font-size: 9px; color: #999; margin-top: 6px; font-weight: 600; }
+
+/* Action Buttons (Screen Only) */
+.actions { text-align: center; margin-bottom: 30px; padding: 20px 0; }
+
+.btn-print, .btn-pdf { 
+    padding: 12px 30px; 
+    border: none; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    color: var(--white); 
+    font-weight: 700; 
+    margin: 5px; 
+    font-family: 'Sarabun', sans-serif;
+    transition: 0.2s;
+}
+
 .btn-print { background: var(--navy); }
 .btn-pdf { background: var(--travel-blue); }
+.btn-print:hover, .btn-pdf:hover { opacity: 0.9; transform: translateY(-1px); }
 
-@media print { .no-print { display: none; } body { padding: 0; background: white; } #tour-container { box-shadow: none; width: 100%; } }
+/* Print Settings */
+@media print { 
+    .no-print { display: none !important; } 
+    body { padding: 0; background: white; } 
+    #tour-container { 
+        box-shadow: none; 
+        width: 100%; 
+        border: 1px solid #ddd;
+    } 
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 600px) {
+    .info-bar { grid-template-columns: 1fr; gap: 20px; }
+    .tour-header { flex-direction: column; gap: 15px; text-align: center; }
+    .tour-footer { flex-direction: column; align-items: center; text-align: center; gap: 30px; }
+    .day-item { gap: 10px; }
+}

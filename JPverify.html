@@ -2,51 +2,100 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verification System | JP Group</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Verify - JP Group Authentication</title>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/JPverify.css">
+    <link rel="stylesheet" href="css/verify-portal.css">
 </head>
 <body>
-    <div class="verify-wrapper">
+
+    <div class="verify-container">
         <header class="verify-header">
-            <img src="assets/Banner.jpg" alt="JP Group" class="verify-logo">
+            <img src="assets/Logo.jpg" alt="JP Group" class="verify-logo" onerror="this.src='https://via.placeholder.com/80x80?text=JP'">
+            <h2>Document Authentication</h2>
+            <p>ระบบตรวจสอบความถูกต้องเอกสารอิเล็กทรอนิกส์</p>
         </header>
 
-        <main class="verify-card" id="main-card">
-            <div id="status-indicator" class="status-banner is-loading">
-                <div class="icon-circle" id="status-icon">⏳</div>
-                <h2 id="status-title">Checking...</h2>
-                <p id="status-message">กำลังตรวจสอบความถูกต้องของเอกสาร</p>
+        <main id="verify-result" class="result-card loading">
+            <div class="status-icon-wrapper">
+                <div id="status-icon">⌛</div>
             </div>
+            
+            <h1 id="status-title">กำลังตรวจสอบ...</h1>
+            <p id="status-desc">โปรดรอสักครู่ ระบบกำลังค้นหาข้อมูลในฐานข้อมูล</p>
 
-            <div class="data-section">
-                <div class="data-group">
+            <div class="info-list">
+                <div class="info-row">
                     <span class="label">Document ID</span>
                     <span class="value" id="doc-id">--------</span>
                 </div>
-                <div class="data-group">
+                <div class="info-row">
                     <span class="label">Issued To</span>
-                    <span class="value" id="doc-holder">--------</span>
+                    <span class="value" id="doc-owner">--------</span>
                 </div>
-                <div class="data-group">
+                <div class="info-row">
                     <span class="label">Issue Date</span>
                     <span class="value" id="doc-date">--------</span>
                 </div>
-                <div class="data-group">
+                <div class="info-row">
                     <span class="label">Status</span>
-                    <span class="value highlight" id="doc-status">Authentic</span>
+                    <span class="value status-text" id="doc-status">Authentic</span>
                 </div>
             </div>
-
-            <div class="verify-footer">
-                <p>© 2025 JP Group Document Authentication</p>
-            </div>
         </main>
-        
-        <a href="index.html" class="back-btn">กลับสู่หน้าหลัก</a>
+
+        <div class="verify-actions">
+            <a href="index.html" class="btn-home">กลับสู่หน้าหลัก</a>
+        </div>
+
+        <footer class="verify-footer">
+            <p>&copy; 2025 <strong>JP Group Document Authentication</strong></p>
+        </div>
     </div>
 
-    <script src="js/JPverify.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            const type = params.get('type');
+
+            const resultCard = document.getElementById('verify-result');
+            const statusIcon = document.getElementById('status-icon');
+            const statusTitle = document.getElementById('status-title');
+            const statusDesc = document.getElementById('status-desc');
+
+            // จำลองการดึงข้อมูล (ในระบบจริงจะใช้ Fetch API)
+            setTimeout(() => {
+                if (id) {
+                    // กรณีพบข้อมูล (จำลอง)
+                    resultCard.classList.remove('loading');
+                    resultCard.classList.add('valid');
+                    
+                    statusIcon.innerHTML = "✅";
+                    statusTitle.innerText = "Verified";
+                    statusTitle.style.color = "#00A950";
+                    statusDesc.innerText = "เอกสารนี้ได้รับการตรวจสอบและยืนยันความถูกต้องแล้ว";
+                    
+                    document.getElementById('doc-id').innerText = id;
+                    document.getElementById('doc-owner').innerText = "Ms. Kritsana Charoensuk"; // ดึงจาก DB จริง
+                    document.getElementById('doc-date').innerText = "17 DEC 2025";
+                    document.getElementById('doc-status').innerText = "Authentic";
+                } else {
+                    // กรณีไม่พบข้อมูล หรือรหัสผิด
+                    resultCard.classList.remove('loading');
+                    resultCard.classList.add('invalid');
+                    
+                    statusIcon.innerHTML = "❌";
+                    statusTitle.innerText = "Invalid";
+                    statusTitle.style.color = "#e17055";
+                    statusDesc.innerText = "ไม่พบรหัสเอกสาร หรือรหัสไม่ถูกต้องในระบบ";
+                    
+                    document.getElementById('doc-id').innerText = "NOT FOUND";
+                    document.getElementById('doc-status').innerText = "Unverified";
+                    document.getElementById('doc-status').style.color = "#e17055";
+                }
+            }, 1200);
+        });
+    </script>
 </body>
 </html>

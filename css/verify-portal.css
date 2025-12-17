@@ -1,0 +1,82 @@
+:root {
+    --bg-color: #f4f7f6;
+    --card-bg: #ffffff;
+    --success: #00A950;
+    --error: #e17055;
+    --text-main: #2d3436;
+    --text-muted: #636e72;
+}
+
+body {
+    font-family: 'Sarabun', sans-serif;
+    background-color: var(--bg-color);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.verify-container {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.verify-header { margin-bottom: 25px; }
+.verify-logo { width: 70px; margin-bottom: 10px; border-radius: 12px; }
+.verify-header h2 { font-size: 20px; margin: 0; color: var(--text-main); }
+.verify-header p { font-size: 13px; color: var(--text-muted); margin: 5px 0; }
+
+.result-card {
+    background: var(--card-bg);
+    padding: 40px 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+}
+
+.status-icon-wrapper {
+    font-size: 60px;
+    margin-bottom: 15px;
+}
+
+.result-card h1 { font-size: 28px; margin: 10px 0; }
+.result-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 30px; }
+
+.info-list {
+    text-align: left;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 20px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.info-row .label { color: var(--text-muted); }
+.info-row .value { font-weight: 600; color: var(--text-main); }
+.status-text { color: var(--success); }
+
+/* Buttons */
+.btn-home {
+    display: inline-block;
+    padding: 12px 40px;
+    background: var(--text-main);
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.verify-footer { margin-top: 30px; font-size: 11px; color: var(--text-muted); }
+
+/* Animation Loading */
+.loading .status-icon-wrapper { animation: spin 2s infinite linear; }
+@keyframes spin { 100% { transform: rotate(360deg); } }

@@ -2,21 +2,67 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tour Voucher - JP World Travel</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="css/tour.css">
     
     <script src="lib/qrcode.min.js"></script>
     <script src="lib/jspdf.umd.min.js"></script>
     <script src="lib/html2canvas.min.js"></script>
+
+    <style>
+        /* สไตล์ส่วนควบคุมสำหรับหน้าเว็บ */
+        .no-print.actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+            background: #ffffff;
+            border-bottom: 2px solid #f1f2f6;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .btn-print, .btn-pdf, .btn-home {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Sarabun', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-home { background: #636e72; color: white; }
+        .btn-print { background: #2d3436; color: white; }
+        .btn-pdf { background: #0984e3; color: white; } /* สีฟ้าสื่อถึงการท่องเที่ยว */
+
+        .btn-print:hover, .btn-pdf:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-print:active { transform: scale(0.95); }
+
+        /* การตั้งค่าสำหรับการพิมพ์ */
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; padding: 0; }
+            #tour-container { box-shadow: none; margin: 0; width: 100%; }
+        }
+    </style>
 </head>
 <body>
 
-    <div class="no-print actions">
+    <nav class="no-print actions">
+        <button onclick="window.location.href='index.html'" class="btn-home">🏠 เมนูหลัก</button>
         <button onclick="window.print()" class="btn-print">🖨️ พิมพ์เอกสาร</button>
         <button id="pdf-btn" onclick="downloadTourPDF()" class="btn-pdf">📄 ดาวน์โหลด PDF</button>
-    </div>
+    </nav>
 
     <div id="tour-container">
         </div>

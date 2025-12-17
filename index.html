@@ -4,75 +4,105 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>JP Group - Document Portal</title>
+  <title>JP Group - Management Portal</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="css/indexRoot.css">
+
   <style>
+    /* Inline Critical CSS สำหรับ Font Face */
     @font-face {
       font-family: 'TH Sarabun New';
       src: url('fonts/THSarabunNew.ttf') format('truetype');
       font-display: swap;
+    }
+    
+    /* สไตล์เพิ่มเติมเพื่อความลื่นไหล */
+    body {
+      background: #f0f2f5;
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
     }
   </style>
 </head>
 <body>
 
   <div class="portal-container">
-    <header>
+    <header class="portal-header">
       <div class="logo-wrapper">
-        <img src="assets/Banner.jpg" alt="JP Group Logo" class="main-logo" onerror="this.src='https://via.placeholder.com/120x120?text=JP+GROUP'">
+        <img src="assets/Banner.jpg" alt="JP Group Banner" class="main-logo" 
+             onerror="this.src='https://via.placeholder.com/800x200?text=JP+GROUP+MANAGEMENT'">
       </div>
-      <h1>JP Travel & Financial Portal</h1>
-      <p>ระบบจัดการเอกสารอิเล็กทรอนิกส์และฐานข้อมูลลูกค้า</p>
+      <div class="header-text">
+        <h1>JP Travel & Financial Portal</h1>
+        <p class="subtitle">ระบบจัดการเอกสารอิเล็กทรอนิกส์และฐานข้อมูลลูกค้าแบบครบวงจร</p>
+      </div>
     </header>
 
-    <nav class="menu-grid">
-      <a href="Steatment.html" class="menu-card statement">
-        <div class="icon">📄</div>
-        <div class="text">
-          <h3>Financial Statement</h3>
-          <p>จัดการรายการเดินบัญชีทั่วไป</p>
-        </div>
-      </a>
+    <main class="menu-section">
+      <div class="menu-grid">
+        
+        <a href="Steatment.html" class="menu-card statement">
+          <div class="icon-box">📄</div>
+          <div class="text-content">
+            <h3>Financial Statement</h3>
+            <p>รายการเดินบัญชีและเอกสารการเงิน</p>
+          </div>
+          <div class="arrow">→</div>
+        </a>
 
-      <a href="ETicketJPariway.html" class="menu-card air">
-        <div class="icon">✈️</div>
-        <div class="text">
-          <h3>Airline Ticket</h3>
-          <p>ตั๋วเครื่องบิน JP Ariway</p>
-        </div>
-      </a>
+        <a href="ETicketJPariway.html" class="menu-card air">
+          <div class="icon-box">✈️</div>
+          <div class="text-content">
+            <h3>Airline Ticket</h3>
+            <p>ตั๋วเครื่องบินและบัตรที่นั่ง JP Ariway</p>
+          </div>
+          <div class="arrow">→</div>
+        </a>
 
-      <a href="ETicketJPhotel.html" class="menu-card hotel">
-        <div class="icon">🏨</div>
-        <div class="text">
-          <h3>Hotel Booking</h3>
-          <p>ใบยืนยันการจองโรงแรม</p>
-        </div>
-      </a>
+        <a href="ETicketJPhotel.html" class="menu-card hotel">
+          <div class="icon-box">🏨</div>
+          <div class="text-content">
+            <h3>Hotel Booking</h3>
+            <p>ใบยืนยันการจองและที่พักในเครือ</p>
+          </div>
+          <div class="arrow">→</div>
+        </a>
 
-      <a href="ETicketJPtour.html" class="menu-card tour">
-        <div class="icon">🗺️</div>
-        <div class="text">
-          <h3>Tour Voucher</h3>
-          <p>แผนการเดินทางและทัวร์</p>
-        </div>
-      </a>
+        <a href="ETicketJPtour.html" class="menu-card tour">
+          <div class="icon-box">🗺️</div>
+          <div class="text-content">
+            <h3>Tour Voucher</h3>
+            <p>แผนการท่องเที่ยวและกิจกรรมต่างประเทศ</p>
+          </div>
+          <div class="arrow">→</div>
+        </a>
 
-      <a href="JPverify.html" class="menu-card verify">
-        <div class="icon">🛡️</div>
-        <div class="text">
-          <h3>Document Verify</h3>
-          <p>ตรวจสอบความถูกต้องผ่านระบบสแกน</p>
-        </div>
-      </a>
-    </nav>
+        <a href="JPverify.html" class="menu-card verify">
+          <div class="icon-box">🛡️</div>
+          <div class="text-content">
+            <h3>Document Verify</h3>
+            <p>ระบบตรวจสอบความถูกต้องเอกสาร (QR Scan)</p>
+          </div>
+          <div class="arrow">→</div>
+        </a>
 
-    <footer>
+      </div>
+    </main>
+
+    <footer class="portal-footer">
       <div class="footer-content">
-        <p>&copy; 2025 <strong>JP Group Management System</strong></p>
-        <div class="time-box">
-          <span class="dot"></span> <span id="current-time">กำลังโหลดเวลา...</span>
+        <div class="copyright">
+          &copy; 2025 <strong>JP Group Management System</strong>
+        </div>
+        <div class="system-status">
+          <div class="time-box">
+            <span class="pulse-dot"></span>
+            <span id="current-time">กำลังเชื่อมต่อฐานข้อมูล...</span>
+          </div>
         </div>
       </div>
     </footer>

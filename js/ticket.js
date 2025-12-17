@@ -1,6 +1,9 @@
 /**
  * JP Ariway - ETicket Logic (Full Implementation)
+ * ประสานการสร้าง QR Code และระบบส่งออก PDF คุณภาพสูง
  */
+
+"use strict";
 
 const ticketData = {
     passenger: "KRITSANA CHAROENSUK",
@@ -12,12 +15,17 @@ const ticketData = {
     boardingTime: "23:15",
     seat: "12A",
     class: "ECONOMY",
-    refNo: "JP-" + Math.floor(Math.random() * 900000 + 100000)
+    refNo: "JP" + Math.floor(Math.random() * 900000 + 100000)
 };
 
+/**
+ * ฟังก์ชันหลักในการวาดตั๋วลงหน้า HTML
+ */
 function renderTicket() {
     const container = document.getElementById('ticket-container');
-    
+    if (!container) return;
+
+    // ฉีด Template ของตั๋วลงใน Container
     container.innerHTML = `
         <div class="ticket">
             <div class="ticket-header">
@@ -72,54 +80,100 @@ function renderTicket() {
             <div class="ticket-footer">
                 <div class="barcode-area">
                     <div id="ticket-qr" class="qr-code"></div>
-                    <p class="ref-no">REF: ${ticketData.refNo}</p>
+                    <p class="ref-no">VERIFICATION ID: ${ticketData.refNo}</p>
                 </div>
                 <div class="notice">
                     * Gate closes 15 mins before departure.<br>
-                    * Please present this pass at security.
+                    * This is an electronic document for security check.
                 </div>
             </div>
         </div>
     `;
     
-    // สร้าง QR Code หลังจาก HTML ปรากฏ
-    setTimeout(generateQR, 100);
+    // เรียกสร้าง QR Code
+    generateQR();
 }
 
+/**
+ * สร้าง QR Code ที่สแกนแล้วพาไปหน้ายืนยันสถานะ Authentic
+ */
 function generateQR() {
-    new QRCode(document.getElementById("ticket-qr"), {
-        text: `TICKET-VERIFIED:${ticketData.refNo}`,
-        width: 70,
-        height: 70,
-        colorDark : "#2d3436",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
-    });
+    const qrElement = document.getElementById("ticket-qr");
+    
+    // ตรวจสอบความพร้อมของ Element และ Library
+    if (!qrElement) return;
+
+    if (typeof QRCode === 'undefined') {
+        console.warn("QRCode library not ready, retrying in 300ms...");
+        setTimeout(generateQR, 300);
+        return;
+    }
+
+    // ล้างค่าเก่า
+    qrElement.innerHTML = "";
+
+    // URL สำหรับตรวจสอบสถานะบน Vercel
+    const BASE_VERIFY_URL = "https://document-portal-lime.vercel.app/JPverify.html";
+    const verificationUrl = `${BASE_VERIFY_URL}?id=${ticketData.refNo}&type=flight`;
+
+    try {
+        new QRCode(qrElement, {
+            text: verificationUrl,
+            width: 100,
+            height: 100,
+            colorDark : "#2d3436",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+        console.log("QR Code generated for ID:", ticketData.refNo);
+    } catch (err) {
+        console.error("QR Generation Error:", err);
+    }
 }
 
+/**
+ * ส่งออกตั๋วเป็นไฟล์ PDF คุณภาพสูง (A4)
+ */
 async function downloadTicketPDF() {
     const btn = document.getElementById('pdf-btn');
-    btn.innerText = "Processing...";
+    if (!btn) return;
     
-    const { jsPDF } = window.jspdf;
-    const element = document.getElementById('ticket-container');
+    const originalText = btn.innerText;
+    btn.innerText = "⌛ Generating...";
+    btn.disabled = true;
     
-    const canvas = await html2canvas(element, { 
-        scale: 3, 
-        useCORS: true,
-        backgroundColor: "#f0f2f5"
-    });
-    
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    
-    const imgWidth = 190;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-    
-    pdf.addImage(imgData, 'PNG', 10, 20, imgWidth, imgHeight);
-    pdf.save(`JP_Ticket_${ticketData.refNo}.pdf`);
-    
-    btn.innerText = "📄 Download PDF";
+    try {
+        const { jsPDF } = window.jspdf;
+        const element = document.querySelector('.ticket');
+        
+        if (!element) throw new Error("Ticket element not found");
+
+        // ใช้ html2canvas แปลงตั๋วเป็นรูปภาพ
+        const canvas = await html2canvas(element, { 
+            scale: 3, 
+            useCORS: true,
+            backgroundColor: "#ffffff",
+            logging: false
+        });
+        
+        const imgData = canvas.toDataURL('image/jpeg', 0.98);
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        
+        // คำนวณขนาดให้อยู่กึ่งกลางหน้า A4
+        const pdfWidth = 160; 
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+        const xPos = (210 - pdfWidth) / 2;
+        
+        pdf.addImage(imgData, 'JPEG', xPos, 30, pdfWidth, pdfHeight);
+        pdf.save(`JP_ETicket_${ticketData.refNo}.pdf`);
+    } catch (error) {
+        console.error("PDF Creation Error:", error);
+        alert("ขออภัย ไม่สามารถสร้าง PDF ได้ โปรดลองใหม่อีกครั้ง");
+    } finally {
+        btn.innerText = originalText;
+        btn.disabled = false;
+    }
 }
 
+// ผูกฟังก์ชันเข้ากับหน้าเว็บ
 document.addEventListener('DOMContentLoaded', renderTicket);
